@@ -8,8 +8,25 @@
 import SwiftUI
 
 struct StarterScreen: View {
+    @State var status = UserDefaults.standard.value(forKey: "status") as? Bool ?? false
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        
+        VStack {
+            if self.status {
+                HomeScreen()
+            }else{
+                SignInScreen()
+            }
+        }
+        .onAppear {
+            let name = NSNotification.Name("status")
+            NotificationCenter.default.addObserver(forName: name, object: nil, queue: .main){ (_) in
+                print("Call Notification Center")
+                self.status = UserDefaults.standard.value(forKey: "status") as? Bool ?? false
+            }
+        }
+        
     }
 }
 
